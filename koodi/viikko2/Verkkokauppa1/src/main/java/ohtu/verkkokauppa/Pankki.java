@@ -1,22 +1,27 @@
 package ohtu.verkkokauppa;
 
-public class Pankki {
+import jdk.nashorn.internal.codegen.CompilerConstants;
+
+public class Pankki implements PankkiIf {
 
     private static Pankki instanssi;
+    
+    private KirjanpitoIF kirjanpito;
 
-    public static Pankki getInstance() {
+    public Pankki(KirjanpitoIF kirjanpito) {
+        this.kirjanpito = kirjanpito;
+    }
+
+    public static Pankki getInstance(KirjanpitoIF kirjanpito) {
         if (instanssi == null) {
-            instanssi = new Pankki();
+            instanssi = new Pankki(kirjanpito);
         }
 
         return instanssi;
     }
-    private Kirjanpito kirjanpito;
+    
 
-    public Pankki() {
-        kirjanpito = Kirjanpito.getInstance();
-    }
-
+    @Override
     public boolean tilisiirto(String nimi, int viitenumero, String tililta, String tilille, int summa) {
         kirjanpito.lisaaTapahtuma("tilisiirto: tililtä " + tilille + " tilille " + tilille
                 + " viite " + viitenumero + " summa " + summa + "e");
